@@ -8,7 +8,11 @@ import nodemailer from "nodemailer";
 const transporter =
 nodemailer.createTransport({
 
-  service:"gmail",
+  host:"smtp.gmail.com",
+
+  port:465,
+
+  secure:true,
 
   auth:{
 
@@ -20,15 +24,17 @@ nodemailer.createTransport({
 
   },
 
-  pool:true,
-
-  maxConnections:5,
-
   tls:{
 
     rejectUnauthorized:false
 
-  }
+  },
+
+  connectionTimeout:10000,
+
+  greetingTimeout:10000,
+
+  socketTimeout:10000
 
 });
 
