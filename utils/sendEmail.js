@@ -1,18 +1,9 @@
 import nodemailer from "nodemailer";
 
-
-// =========================
-// CREATE TRANSPORTER
-// =========================
-
 const transporter =
 nodemailer.createTransport({
 
-  host:"smtp.gmail.com",
-
-  port:465,
-
-  secure:true,
+  service:"gmail",
 
   auth:{
 
@@ -28,20 +19,12 @@ nodemailer.createTransport({
 
     rejectUnauthorized:false
 
-  },
-
-  connectionTimeout:10000,
-
-  greetingTimeout:10000,
-
-  socketTimeout:10000
+  }
 
 });
 
 
-// =========================
-// VERIFY SMTP ON STARTUP
-// =========================
+// VERIFY SMTP
 
 transporter.verify()
 
@@ -64,9 +47,7 @@ transporter.verify()
 });
 
 
-// =========================
 // SEND EMAIL
-// =========================
 
 const sendEmail = async(
 
@@ -78,19 +59,12 @@ const sendEmail = async(
 
   try{
 
-
-    // =========================
-    // SEND MAIL
-    // =========================
-
     const info =
-
     await transporter.sendMail({
 
       from:{
 
-        name:
-        "Inventory AI",
+        name:"Inventory AI",
 
         address:
         process.env.EMAIL_USER
@@ -101,56 +75,14 @@ const sendEmail = async(
 
       subject,
 
-      html,
-
-      text:
-      "Please open this email in HTML supported mode."
+      html
 
     });
 
-
-    // =========================
-    // SUCCESS LOGS
-    // =========================
-
     console.log(
-
       "📧 Email sent:",
-
       info.messageId
-
     );
-
-    console.log(
-
-      "📩 Receiver:",
-
-      email
-
-    );
-
-    console.log(
-
-      "✅ Accepted:",
-
-      info.accepted
-
-    );
-
-    console.log(
-
-      "❌ Rejected:",
-
-      info.rejected
-
-    );
-
-    console.log(
-
-      "━━━━━━━━━━━━━━━━━━"
-
-    );
-
 
     return info;
 
@@ -159,18 +91,10 @@ const sendEmail = async(
   catch(error){
 
     console.log(
-
       "❌ EMAIL ERROR"
-
     );
 
     console.log(error);
-
-    console.log(
-
-      "━━━━━━━━━━━━━━━━━━"
-
-    );
 
     throw error;
 
