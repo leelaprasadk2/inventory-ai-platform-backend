@@ -8,31 +8,27 @@ import nodemailer from "nodemailer";
 const transporter =
 nodemailer.createTransport({
 
-host:"smtp.gmail.com",
+  service:"gmail",
 
-port:587,
+  auth:{
 
-secure:false,
+    user:
+    process.env.EMAIL_USER,
 
-pool:true,
+    pass:
+    process.env.EMAIL_PASS
 
-maxConnections:5,
+  },
 
-auth:{
+  pool:true,
 
-user:
-process.env.EMAIL_USER,
+  maxConnections:5,
 
-pass:
-process.env.EMAIL_PASS
+  tls:{
 
-},
+    rejectUnauthorized:false
 
-tls:{
-
-rejectUnauthorized:false
-
-}
+  }
 
 });
 
@@ -45,24 +41,21 @@ transporter.verify()
 
 .then(()=>{
 
-console.log(
-"✅ SMTP Connected Successfully"
-);
+  console.log(
+    "✅ SMTP Connected Successfully"
+  );
 
 })
 
 .catch((error)=>{
 
-console.log(
-"❌ SMTP Error:"
-);
+  console.log(
+    "❌ SMTP Error:"
+  );
 
-console.log(
-error.message
-);
+  console.log(error);
 
 });
-
 
 
 // =========================
@@ -71,115 +64,111 @@ error.message
 
 const sendEmail = async(
 
-email,
-subject,
-html
+  email,
+  subject,
+  html
 
 )=>{
 
-try{
+  try{
 
 
-// =========================
-// SEND MAIL
-// =========================
+    // =========================
+    // SEND MAIL
+    // =========================
 
-const info=
+    const info =
 
-await transporter.sendMail({
+    await transporter.sendMail({
 
-from:{
+      from:{
 
-name:
-"Inventory AI",
+        name:
+        "Inventory AI",
 
-address:
-process.env.EMAIL_USER
+        address:
+        process.env.EMAIL_USER
 
-},
+      },
 
-to:email,
+      to:email,
 
-subject,
+      subject,
 
-html,
+      html,
 
-text:
-"Please open this email in HTML supported mode."
+      text:
+      "Please open this email in HTML supported mode."
 
-});
-
-
-// =========================
-// SUCCESS LOGS
-// =========================
-
-console.log(
-
-"📧 Email sent:",
-
-info.messageId
-
-);
-
-console.log(
-
-"📩 Receiver:",
-
-email
-
-);
-
-console.log(
-
-"✅ Accepted:",
-
-info.accepted
-
-);
-
-console.log(
-
-"❌ Rejected:",
-
-info.rejected
-
-);
-
-console.log(
-
-"━━━━━━━━━━━━━━━━━━"
-
-);
+    });
 
 
-return info;
+    // =========================
+    // SUCCESS LOGS
+    // =========================
 
-}
+    console.log(
 
-catch(error){
+      "📧 Email sent:",
 
-console.log(
+      info.messageId
 
-"❌ EMAIL ERROR"
+    );
 
-);
+    console.log(
 
-console.log(
+      "📩 Receiver:",
 
-error.message
+      email
 
-);
+    );
 
-console.log(
+    console.log(
 
-"━━━━━━━━━━━━━━━━━━"
+      "✅ Accepted:",
 
-);
+      info.accepted
 
-throw error;
+    );
 
-}
+    console.log(
+
+      "❌ Rejected:",
+
+      info.rejected
+
+    );
+
+    console.log(
+
+      "━━━━━━━━━━━━━━━━━━"
+
+    );
+
+
+    return info;
+
+  }
+
+  catch(error){
+
+    console.log(
+
+      "❌ EMAIL ERROR"
+
+    );
+
+    console.log(error);
+
+    console.log(
+
+      "━━━━━━━━━━━━━━━━━━"
+
+    );
+
+    throw error;
+
+  }
 
 };
 
