@@ -271,8 +271,13 @@ new Server(server,{
 
 cors:{
 
-origin:
-process.env.CLIENT_URL,
+origin:[
+
+"http://localhost:5173",
+
+"https://inventory-ai-platform.vercel.app"
+
+],
 
 credentials:true,
 
@@ -351,8 +356,13 @@ app.use(
 
 cors({
 
-origin:
+origin:[
+
 "http://localhost:5173",
+
+"https://inventory-ai-platform.vercel.app"
+
+],
 
 credentials:true,
 
