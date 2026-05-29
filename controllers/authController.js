@@ -53,6 +53,8 @@ async (req,res)=>{
 
 try{
 
+console.log("REGISTER START");
+
 const {
 
 name,
@@ -73,6 +75,8 @@ await User.findOne({
 email
 
 });
+
+console.log("USER CHECKED");
 
 if(existingUser){
 
@@ -188,7 +192,7 @@ Date.now()
 +3600000
 
 });
-
+console.log("USER CREATED:", user._id);
 
 // =========================
 // EMAIL LINK
@@ -282,15 +286,15 @@ try {
     email,
     "Verify Your Inventory AI Account",
     `
-    <h2>Hello ${name}</h2>
-
-    <p>Please verify your account</p>
-
-    <a href="${verifyUrl}">
-      Verify Account
-    </a>
+      <h2>Hello ${name}</h2>
+      <p>Please verify your account</p>
+      <a href="${verifyUrl}">
+        Verify Account
+      </a>
     `
   );
+
+  console.log("EMAIL SENT SUCCESSFULLY");
 
 } catch(err) {
 
@@ -328,6 +332,7 @@ read:false
 });
 
 }
+console.log("REGISTER SUCCESS");
 
 res.status(201).json({
 
