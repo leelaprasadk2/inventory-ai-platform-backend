@@ -281,7 +281,15 @@ try {
   await sendEmail(
     email,
     "Verify Your Inventory AI Account",
-    htmlContent
+    `
+    <h2>Hello ${name}</h2>
+
+    <p>Please verify your account</p>
+
+    <a href="${verifyUrl}">
+      Verify Account
+    </a>
+    `
   );
 
 } catch(err) {
