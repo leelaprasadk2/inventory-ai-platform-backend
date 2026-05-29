@@ -26,7 +26,7 @@ nodemailer.createTransport({
 
 // VERIFY SMTP
 
-transporter.verify()
+/*transporter.verify()
 
 .then(()=>{
 
@@ -44,7 +44,7 @@ transporter.verify()
 
   console.log(error);
 
-});
+});*/
 
 
 // SEND EMAIL
