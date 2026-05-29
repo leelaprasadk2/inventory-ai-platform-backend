@@ -198,7 +198,7 @@ const verifyUrl =
 
 `${process.env.CLIENT_URL}/verify-email/${verifyToken}`;
 
-await sendEmail(
+/*await sendEmail(
 
 email,
 
@@ -274,10 +274,21 @@ This link expires in 1 hour
 </div>
 
 `
-);
+);*/
 
+try {
 
-// =========================
+  await sendEmail(
+    email,
+    "Verify Your Inventory AI Account",
+    htmlContent
+  );
+
+} catch(err) {
+
+  console.log("EMAIL FAILED:", err.message);
+
+}// =========================
 // ADMIN NOTIFICATION
 // =========================
 
