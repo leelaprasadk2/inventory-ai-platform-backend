@@ -20,7 +20,7 @@ transporter.verify()
 
 .then(() => {
 
-  console.log("✅ SMTP Connected Successfully");
+  console.log("✅ SMTP Connected Successfully v2");
 
 })
 
