@@ -102,24 +102,19 @@ if(existingUser){
 
     `${process.env.CLIENT_URL}/verify-email/${verifyToken}`;
 
-    await sendEmail(
-
-      existingUser.email,
-
-      "Verify Email",
-
-      `
-      <h2>Hello ${existingUser.name}</h2>
-
-      <p>
-      Click below to verify account
-      </p>
-
-      <a href="${verifyUrl}">
-      Verify Account
-      </a>
-      `
-    );
+    try {
+  await sendEmail(
+    existingUser.email,
+    "Verify Email",
+    `
+    <h2>Hello ${existingUser.name}</h2>
+    <p>Click below to verify account</p>
+    <a href="${verifyUrl}">Verify Account</a>
+    `
+  );
+} catch (err) {
+  console.log("VERIFY EMAIL FAILED:", err.message);
+}
 
     return res.status(200).json({
 
@@ -202,83 +197,7 @@ const verifyUrl =
 
 `${process.env.CLIENT_URL}/verify-email/${verifyToken}`;
 
-/*await sendEmail(
 
-email,
-
-"Verify Your Inventory AI Account",
-
-`
-
-<div style="
-font-family:Arial,sans-serif;
-padding:30px;
-text-align:center;
-background:#f4f7fb;
-">
-
-<div style="
-max-width:600px;
-margin:auto;
-background:white;
-padding:40px;
-border-radius:15px;
-box-shadow:0 4px 20px rgba(0,0,0,0.1);
-">
-
-<h1 style="
-color:#06b6d4;
-">
-Inventory AI
-</h1>
-
-<h2>
-Email Verification
-</h2>
-
-<p>
-Hello ${name}
-</p>
-
-<p>
-Please verify your account
-</p>
-
-<a
-href="${verifyUrl}"
-
-style="
-display:inline-block;
-margin-top:25px;
-background:#06b6d4;
-padding:14px 30px;
-border-radius:10px;
-color:white;
-text-decoration:none;
-"
-
->
-
-Verify Account
-
-</a>
-
-<p style="
-margin-top:20px;
-font-size:13px;
-color:#999;
-">
-
-This link expires in 1 hour
-
-</p>
-
-</div>
-
-</div>
-
-`
-);*/
 
 try {
 
@@ -286,21 +205,25 @@ try {
     email,
     "Verify Your Inventory AI Account",
     `
-      <h2>Hello ${name}</h2>
-      <p>Please verify your account</p>
-      <a href="${verifyUrl}">
-        Verify Account
-      </a>
+    <h2>Hello ${name}</h2>
+
+    <p>Please verify your account</p>
+
+    <a href="${verifyUrl}">
+      Verify Account
+    </a>
     `
   );
 
   console.log("EMAIL SENT SUCCESSFULLY");
 
-} catch(err) {
+} catch (err) {
 
   console.log("EMAIL FAILED:", err.message);
 
-}// =========================
+}
+
+// =========================
 // ADMIN NOTIFICATION
 // =========================
 
@@ -367,70 +290,62 @@ message:error.message
 // VERIFY EMAIL
 // =========================
 
-export const verifyEmail =
-async(req,res)=>{
+export const verifyEmail = async (req, res) => {
+  try {
 
-try{
+    console.log("TOKEN RECEIVED:", req.params.token);
 
-const user =
-await User.findOne({
+    const user = await User.findOne({
+      verifyToken: req.params.token
+    });
 
-verifyToken:
-req.params.token,
+    console.log("USER FOUND:", user);
 
-verifyTokenExpire:{
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid token"
+      });
+    }
 
-$gt:Date.now()
+    console.log(
+      "TOKEN EXPIRE:",
+      user.verifyTokenExpire
+    );
 
-}
+    console.log(
+      "CURRENT TIME:",
+      new Date()
+    );
 
-});
+    if (user.verifyTokenExpire < Date.now()) {
+      return res.status(400).json({
+        success: false,
+        message: "Token expired"
+      });
+    }
 
-if(!user){
+    user.isVerified = true;
+    user.verifyToken = null;
+    user.verifyTokenExpire = null;
 
-return res.status(400)
-.json({
+    await user.save();
 
-success:false,
+    res.status(200).json({
+      success: true,
+      message: "Email verified"
+    });
 
-message:
-"Invalid or expired token"
+  } catch (error) {
 
-});
+    console.log(error);
 
-}
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
 
-user.isVerified=true;
-
-user.verifyToken=null;
-
-user.verifyTokenExpire=null;
-
-await user.save();
-
-res.status(200).json({
-
-success:true,
-
-message:
-"Email verified"
-
-});
-
-}
-
-catch(error){
-
-res.status(500).json({
-
-success:false,
-
-message:error.message
-
-});
-
-}
-
+  }
 };
 
 
@@ -639,21 +554,8 @@ await user.save();
 const resetUrl=
 
 `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
-
-await sendEmail(
-
-email,
-
-"Reset Your Inventory AI Password",
-
-`
-
-<div style="
-font-family:Arial;
-padding:30px;
-text-align:center;
-background:#f4f7fb;
-">
+const html = `
+<div style="font-family:Arial;padding:30px;text-align:center;background:#f4f7fb;">
 
 <div style="
 max-width:600px;
@@ -661,65 +563,34 @@ margin:auto;
 background:white;
 padding:40px;
 border-radius:15px;
-box-shadow:0 4px 20px rgba(0,0,0,0.1);
 ">
 
-<h1 style="
-color:#06b6d4;
-">
-
+<h1 style="color:#06b6d4;">
 Inventory AI
-
 </h1>
 
-<h2>
+<h2>Reset Password</h2>
 
+<p>Click below to reset your password</p>
+
+<a href="${resetUrl}">
 Reset Password
-
-</h2>
-
-<p>
-
-Click below to reset your password
-
-</p>
-
-<a
-href="${resetUrl}"
-
-style="
-display:inline-block;
-margin-top:20px;
-padding:14px 30px;
-background:#06b6d4;
-color:white;
-border-radius:10px;
-text-decoration:none;
-"
-
->
-
-Reset Password
-
 </a>
 
-<p style="
-margin-top:25px;
-font-size:13px;
-color:#999;
-">
-
-This link expires in 1 hour.
-
-</p>
-
 </div>
 
 </div>
+`;
 
-`
-
-);
+try {
+  await sendEmail(
+    email,
+    "Reset Your Inventory AI Password",
+    html
+  );
+} catch (err) {
+  console.log("RESET EMAIL FAILED:", err.message);
+}
 
 res.status(200).json({
 

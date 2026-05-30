@@ -1,77 +1,66 @@
 import nodemailer from "nodemailer";
 
-const transporter =
-nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
 
-  service:"gmail",
+  host: "smtp.gmail.com",
 
-  auth:{
+  port: 587,
 
-    user:
-    process.env.EMAIL_USER,
+  secure: false,
 
-    pass:
-    process.env.EMAIL_PASS
+  auth: {
 
-  },
+    user: process.env.EMAIL_USER,
 
-  tls:{
-
-    rejectUnauthorized:false
+    pass: process.env.EMAIL_PASS
 
   }
 
 });
 
 
-// VERIFY SMTP
+// SMTP VERIFY
 
-/*transporter.verify()
+transporter.verify()
 
-.then(()=>{
+.then(() => {
 
-  console.log(
-    "✅ SMTP Connected Successfully"
-  );
+  console.log("✅ SMTP Connected Successfully");
 
 })
 
-.catch((error)=>{
+.catch((error) => {
 
-  console.log(
-    "❌ SMTP Error:"
-  );
+  console.log("❌ SMTP ERROR");
 
   console.log(error);
 
-});*/
+});
 
 
-// SEND EMAIL
-
-const sendEmail = async(
+const sendEmail = async (
 
   email,
   subject,
   html
 
-)=>{
+) => {
 
-  try{
+  try {
 
     const info =
+
     await transporter.sendMail({
 
-      from:{
+      from: {
 
-        name:"Inventory AI",
+        name: "Inventory AI",
 
-        address:
-        process.env.EMAIL_USER
+        address: process.env.EMAIL_USER
 
       },
 
-      to:email,
+      to: email,
 
       subject,
 
@@ -79,20 +68,17 @@ const sendEmail = async(
 
     });
 
-    console.log(
-      "📧 Email sent:",
-      info.messageId
-    );
+    console.log("📧 Email Sent");
+
+    console.log(info.messageId);
 
     return info;
 
   }
 
-  catch(error){
+  catch (error) {
 
-    console.log(
-      "❌ EMAIL ERROR"
-    );
+    console.log("❌ EMAIL ERROR");
 
     console.log(error);
 
