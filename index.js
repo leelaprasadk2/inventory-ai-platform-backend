@@ -221,7 +221,6 @@ console.log(
 
 });*/
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 import "./config/env.js";
 import express from "express";
 import cors from "cors";

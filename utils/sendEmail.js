@@ -1,4 +1,7 @@
 import nodemailer from "nodemailer";
+import dns from "dns";
+
+dns.setDefaultResultOrder("ipv4first");
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -10,77 +13,34 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS
   },
 
-  family: 4 // Force IPv4
+  connectionTimeout: 30000,
+  greetingTimeout: 30000,
+  socketTimeout: 30000
 });
 
-
-// SMTP VERIFY
-
-transporter.verify()
-
-.then(() => {
-
-  console.log("✅ SMTP Connected Successfully v2");
-
-})
-
-.catch((error) => {
-
-  console.log("❌ SMTP ERROR");
-
-  console.log(error);
-
-});
-
-
-const sendEmail = async (
-
-  email,
-  subject,
-  html
-
-) => {
-
+const sendEmail = async (email, subject, html) => {
   try {
 
-    const info =
-
-    await transporter.sendMail({
-
+    const info = await transporter.sendMail({
       from: {
-
         name: "Inventory AI",
-
         address: process.env.EMAIL_USER
-
       },
-
       to: email,
-
       subject,
-
       html
-
     });
 
     console.log("📧 Email Sent");
-
-    console.log(info.messageId);
-
     return info;
 
-  }
+  } catch (error) {
 
-  catch (error) {
-
-    console.log("❌ EMAIL ERROR");
-
-    console.log(error);
+    console.error("❌ EMAIL ERROR");
+    console.error(error);
 
     throw error;
-
   }
-
 };
 
 export default sendEmail;
