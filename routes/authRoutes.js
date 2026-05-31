@@ -4,9 +4,9 @@ import {
 
   register,
   login,
-  verifyEmail,
-  forgotPassword,
-  resetPassword,
+  //verifyEmail,
+  //forgotPassword,
+  //resetPassword,
   googleLogin
 
 } from "../controllers/authController.js";
@@ -44,39 +44,39 @@ router.post(
 // VERIFY EMAIL
 // =========================
 
-router.get(
+/*router.get(
 
   "/verify-email/:token",
 
   verifyEmail
 
-);
+);*/
 
 
 // =========================
 // FORGOT PASSWORD
 // =========================
 
-router.post(
+/*router.post(
 
   "/forgot-password",
 
   forgotPassword
 
-);
+);*/
 
 
 // =========================
 // RESET PASSWORD
 // =========================
 
-router.post(
+/*router.post(
 
   "/reset-password/:token",
 
   resetPassword
 
-);
+);*/
 
 
 // =========================
