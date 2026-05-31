@@ -21,6 +21,22 @@ const transporter = nodemailer.createTransport({
 
 });
 
+
+transporter.verify((error, success) => {
+
+  if (error) {
+
+    console.log("❌ SMTP VERIFY ERROR");
+    console.log(error);
+
+  } else {
+
+    console.log("✅ SMTP SERVER READY");
+
+  }
+
+});
+
 const sendEmail = async (email, subject, html) => {
 
   try {

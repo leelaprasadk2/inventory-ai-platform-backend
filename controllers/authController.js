@@ -4,9 +4,9 @@ import Notification from "../models/Notification.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-//import crypto from "crypto";
+import crypto from "crypto";
 
-//import sendEmail from "../utils/sendEmail.js";
+import sendEmail from "../utils/sendEmail.js";
 
 import { OAuth2Client } from "google-auth-library";
 
@@ -78,7 +78,7 @@ email
 
 console.log("USER CHECKED");
 
-/*if(existingUser){
+if(existingUser){
 
   // Existing but not verified
 
@@ -136,14 +136,14 @@ console.log("USER CHECKED");
 
   });
 
-}*/
+}
 
-if (existingUser) {
+/*if (existingUser) {
   return res.status(400).json({
     success: false,
     message: "User already exists"
   });
-}
+}*/
 
 
 // =========================
@@ -163,7 +163,7 @@ password,
 // CREATE VERIFY TOKEN
 // =========================
 
-/*const verifyToken =
+const verifyToken =
 
 crypto.randomBytes(32)
 .toString("hex");
@@ -193,22 +193,16 @@ verifyTokenExpire:
 Date.now()
 +3600000
 
-});*/
-
-const user = await User.create({
-  name,
-  email,
-  password: hashedPassword,
-  role: role || "user",
-  isVerified: true
 });
+
+
 console.log("USER CREATED:", user._id);
 
 // =========================
 // EMAIL LINK
 // =========================
 
-/*const verifyUrl =
+const verifyUrl =
 
 `${process.env.CLIENT_URL}/verify-email/${verifyToken}`;
 
@@ -236,7 +230,7 @@ try {
 
   console.log("EMAIL FAILED:", err.message);
 
-}*/
+}
 
 // =========================
 // ADMIN NOTIFICATION
@@ -406,7 +400,7 @@ message:
 // EMAIL CHECK
 // =========================
 
-/*if(!user.isVerified){
+if(!user.isVerified){
 
 return res.status(401)
 .json({
@@ -418,7 +412,7 @@ message:
 
 });
 
-}*/
+}
 
 
 // =========================
@@ -523,7 +517,7 @@ message:error.message
 // FORGOT PASSWORD
 // =========================
 
-/*export const forgotPassword =
+export const forgotPassword =
 async(req,res)=>{
 
 try{
@@ -630,7 +624,7 @@ message:error.message
 
 }
 
-};*/
+};
 
 
 // =========================
