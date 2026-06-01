@@ -4,25 +4,23 @@ const transporter = nodemailer.createTransport({
 
   host: "smtp.gmail.com",
 
-  port: 587,
+  port: 465,
 
-  secure: false,
-
-  requireTLS: true,
+  secure: true,
 
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  },
 
-  tls: {
-    rejectUnauthorized: false
+    user: process.env.EMAIL_USER,
+
+    pass: process.env.EMAIL_PASS
+
   }
 
 });
 
+// Verify SMTP connection when server starts
 
-/*transporter.verify((error, success) => {
+transporter.verify((error, success) => {
 
   if (error) {
 
@@ -35,9 +33,15 @@ const transporter = nodemailer.createTransport({
 
   }
 
-});*/
+});
 
-const sendEmail = async (email, subject, html) => {
+const sendEmail = async (
+
+  email,
+  subject,
+  html
+
+) => {
 
   try {
 
@@ -57,9 +61,12 @@ const sendEmail = async (email, subject, html) => {
 
     return info;
 
-  } catch (error) {
+  }
 
-    console.error("❌ EMAIL ERROR:", error);
+  catch (error) {
+
+    console.log("❌ EMAIL ERROR");
+    console.log(error);
 
     throw error;
 
