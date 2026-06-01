@@ -2,52 +2,33 @@ import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
 
-  host: "smtp.gmail.com",
+  host: "smtp-relay.brevo.com",
 
-  port: 465,
+  port: 587,
 
-  secure: true,
+  secure: false,
 
   auth: {
 
-    user: process.env.EMAIL_USER,
+    user: process.env.BREVO_EMAIL,
 
-    pass: process.env.EMAIL_PASS
-
-  }
-
-});
-
-// Verify SMTP connection when server starts
-
-transporter.verify((error, success) => {
-
-  if (error) {
-
-    console.log("❌ SMTP VERIFY ERROR");
-    console.log(error);
-
-  } else {
-
-    console.log("✅ SMTP SERVER READY");
+    pass: process.env.BREVO_SMTP_KEY
 
   }
 
 });
 
 const sendEmail = async (
-
   email,
   subject,
   html
-
 ) => {
 
   try {
 
     const info = await transporter.sendMail({
 
-      from: `"Inventory AI" <${process.env.EMAIL_USER}>`,
+      from: `"Inventory AI" <${process.env.BREVO_EMAIL}>`,
 
       to: email,
 
