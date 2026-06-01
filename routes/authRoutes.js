@@ -107,7 +107,7 @@ router.get(
 
       await sendEmail(
 
-        "YOUR_PERSONAL_EMAIL@gmail.com",
+        "klpklpklp121212@gmail.com",
 
         "Brevo Test",
 
