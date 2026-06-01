@@ -1,10 +1,18 @@
 import nodemailer from "nodemailer";
 
+
+console.log("SMTP HOST:", "smtp-relay.brevo.com");
+console.log("SMTP USER:", process.env.BREVO_EMAIL);
+console.log(
+  "SMTP KEY EXISTS:",
+  !!process.env.BREVO_SMTP_KEY
+);
+
 const transporter = nodemailer.createTransport({
 
   host: "smtp-relay.brevo.com",
 
-  port: 587,
+  port: 465,
 
   secure: false,
 
