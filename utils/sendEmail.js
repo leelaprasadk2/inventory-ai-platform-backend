@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
 
   auth: {
 
-    user: process.env.BREVO_EMAIL,
+    user: process.env.BREVO_SMTP_LOGIN,
 
     pass: process.env.BREVO_SMTP_KEY
 
@@ -24,35 +24,21 @@ const sendEmail = async (
   html
 ) => {
 
-  try {
+  const info = await transporter.sendMail({
 
-    const info = await transporter.sendMail({
+    from: `"Inventory AI" <${process.env.BREVO_EMAIL}>`,
 
-      from: `"Inventory AI" <${process.env.BREVO_EMAIL}>`,
+    to: email,
 
-      to: email,
+    subject,
 
-      subject,
+    html
 
-      html
+  });
 
-    });
+  console.log("✅ Email Sent:", info.messageId);
 
-    console.log("✅ Email Sent:", info.messageId);
-
-    return info;
-
-  }
-
-  catch (error) {
-
-    console.log("❌ EMAIL ERROR");
-    console.log(error);
-
-    throw error;
-
-  }
-
+  return info;
 };
 
 export default sendEmail;
