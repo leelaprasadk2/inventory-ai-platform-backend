@@ -1,39 +1,40 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
-console.log("SMTP HOST:", "smtp-relay.brevo.com");
-console.log("SMTP USER:", process.env.BREVO_SMTP_LOGIN);
-console.log(
-  "SMTP KEY EXISTS:",
-  !!process.env.BREVO_SMTP_KEY
+const resend = new Resend(
+  process.env.RESEND_API_KEY
 );
 
-const transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 465,
-  secure: true, // IMPORTANT
-
-  auth: {
-    user: process.env.BREVO_SMTP_LOGIN,
-    pass: process.env.BREVO_SMTP_KEY
-  }
-});
-
-const sendEmail = async (email, subject, html) => {
+const sendEmail = async (
+  email,
+  subject,
+  html
+) => {
   try {
-    const info = await transporter.sendMail({
-      from: `"Inventory AI" <${process.env.BREVO_EMAIL}>`,
+
+    const data = await resend.emails.send({
+
+      from: process.env.EMAIL_FROM,
+
       to: email,
+
       subject,
+
       html
+
     });
 
-    console.log("✅ Email Sent:", info.messageId);
-    return info;
+    console.log("✅ Email Sent");
+    console.log(data);
+
+    return data;
 
   } catch (error) {
+
     console.log("❌ EMAIL ERROR");
     console.log(error);
+
     throw error;
+
   }
 };
 
