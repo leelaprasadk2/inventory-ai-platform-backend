@@ -22,7 +22,7 @@ const transporter = nodemailer.createTransport({
 });
 
 
-transporter.verify((error, success) => {
+/*transporter.verify((error, success) => {
 
   if (error) {
 
@@ -35,7 +35,7 @@ transporter.verify((error, success) => {
 
   }
 
-});
+});*/
 
 const sendEmail = async (email, subject, html) => {
 
