@@ -101,7 +101,7 @@ if(existingUser){
     const verifyUrl =
 
     `${process.env.CLIENT_URL}/verify-email/${verifyToken}`;
-
+     console.log("VERIFY URL:", verifyUrl);
     try {
   await sendEmail(
     existingUser.email,
@@ -205,7 +205,7 @@ console.log("USER CREATED:", user._id);
 const verifyUrl =
 
 `${process.env.CLIENT_URL}/verify-email/${verifyToken}`;
-
+console.log("VERIFY URL:", verifyUrl);
 
 
 try {
@@ -563,6 +563,7 @@ await user.save();
 const resetUrl=
 
 `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
+console.log("RESET URL:", resetUrl);
 const html = `
 <div style="font-family:Arial;padding:30px;text-align:center;background:#f4f7fb;">
 

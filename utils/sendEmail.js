@@ -6,8 +6,6 @@ client.authentications["api-key"].apiKey =
   process.env.BREVO_API_KEY;
 
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-console.log("VERIFY URL:", verifyUrl);
-console.log("RESET URL:", resetUrl);
 const sendEmail = async (email, subject, html) => {
   try {
     const result = await apiInstance.sendTransacEmail({
