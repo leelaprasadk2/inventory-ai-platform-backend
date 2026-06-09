@@ -103,15 +103,23 @@ if(existingUser){
     `${process.env.CLIENT_URL}/verify-email/${verifyToken}`;
      console.log("VERIFY URL:", verifyUrl);
     try {
-  await sendEmail(
-    existingUser.email,
-    "Verify Email",
-    `
-    <h2>Hello ${existingUser.name}</h2>
-    <p>Click below to verify account</p>
-    <a href="${verifyUrl}">Verify Account</a>
-    `
-  );
+ await sendEmail(
+  existingUser.email,
+  "Verify Email",
+  `
+  <h2>Hello ${existingUser.name}</h2>
+
+  <p>Click below to verify account</p>
+
+  <a href="${verifyUrl}">Verify Account</a>
+
+  <br><br>
+
+  <p>If the button doesn't work, copy and paste this URL:</p>
+
+  <p>${verifyUrl}</p>
+  `
+);
 } catch (err) {
   console.log("VERIFY EMAIL FAILED:", err.message);
 }
@@ -210,19 +218,25 @@ console.log("VERIFY URL:", verifyUrl);
 
 try {
 
-  await sendEmail(
-    email,
-    "Verify Your Inventory AI Account",
-    `
-    <h2>Hello ${name}</h2>
+ await sendEmail(
+  email,
+  "Verify Your Inventory AI Account",
+  `
+  <h2>Hello ${name}</h2>
 
-    <p>Please verify your account</p>
+  <p>Please verify your account</p>
 
-    <a href="${verifyUrl}">
-      Verify Account
-    </a>
-    `
-  );
+  <a href="${verifyUrl}">
+    Verify Account
+  </a>
+
+  <br><br>
+
+  <p>If the button doesn't work, copy and paste this URL:</p>
+
+  <p>${verifyUrl}</p>
+  `
+);
 
   console.log("EMAIL SENT SUCCESSFULLY");
 
@@ -586,6 +600,12 @@ Inventory AI
 <a href="${resetUrl}">
 Reset Password
 </a>
+
+<br><br>
+
+<p>If the button doesn't work, copy and paste this URL:</p>
+
+<p>${resetUrl}</p>
 
 </div>
 
