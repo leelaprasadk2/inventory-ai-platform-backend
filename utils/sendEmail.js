@@ -1,24 +1,30 @@
-import nodemailer from "nodemailer";
+import SibApiV3Sdk from "sib-api-v3-sdk";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const client = SibApiV3Sdk.ApiClient.instance;
+
+client.authentications["api-key"].apiKey =
+  process.env.BREVO_API_KEY;
+
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 const sendEmail = async (email, subject, html) => {
   try {
-    const info = await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
+    const result = await apiInstance.sendTransacEmail({
+      sender: {
+        email: process.env.BREVO_EMAIL,
+        name: "Inventory AI",
+      },
+      to: [
+        {
+          email,
+        },
+      ],
       subject,
-      html,
+      htmlContent: html,
     });
 
-    console.log("Email sent:", info.messageId);
-    return info;
+    console.log("Email sent:", result);
+    return result;
   } catch (error) {
     console.error("Email Error:", error);
     throw error;
