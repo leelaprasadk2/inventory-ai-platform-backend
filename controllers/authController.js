@@ -226,15 +226,25 @@ try {
 
   <p>Please verify your account</p>
 
-  <a href="${verifyUrl}">
+  <a
+    href="${verifyUrl}"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
     Verify Account
   </a>
 
   <br><br>
 
-  <p>If the button doesn't work, copy and paste this URL:</p>
+  <p>If the button doesn't work, click this link:</p>
 
-  <p>${verifyUrl}</p>
+  <a
+    href="${verifyUrl}"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    ${verifyUrl}
+  </a>
   `
 );
 
