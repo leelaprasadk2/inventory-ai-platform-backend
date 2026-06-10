@@ -98,10 +98,15 @@ if(existingUser){
 
     await existingUser.save();
 
-    const verifyUrl =
+   const baseUrl = process.env.CLIENT_URL.trim();
 
-    `${process.env.CLIENT_URL}/verify-email/${verifyToken}`;
-     console.log("VERIFY URL:", verifyUrl);
+const verifyUrl =
+`${baseUrl}/verify-email/${verifyToken}`;
+
+console.log(
+  "VERIFY_URL_DEBUG:",
+  JSON.stringify(verifyUrl)
+);
     try {
  await sendEmail(
   existingUser.email,
@@ -210,10 +215,15 @@ console.log("USER CREATED:", user._id);
 // EMAIL LINK
 // =========================
 
-const verifyUrl =
+const baseUrl = process.env.CLIENT_URL.trim();
 
-`${process.env.CLIENT_URL}/verify-email/${verifyToken}`;
-console.log("VERIFY URL:", verifyUrl);
+const verifyUrl =
+`${baseUrl}/verify-email/${verifyToken}`;
+
+console.log(
+  "VERIFY_URL_DEBUG:",
+  JSON.stringify(verifyUrl)
+);
 
 
 try {
