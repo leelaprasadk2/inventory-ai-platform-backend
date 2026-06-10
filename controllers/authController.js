@@ -594,10 +594,15 @@ Date.now()+3600000;
 
 await user.save();
 
-const resetUrl=
+const baseUrl = process.env.CLIENT_URL.trim();
 
-`${process.env.CLIENT_URL}/reset-password/${resetToken}`;
-console.log("RESET URL:", resetUrl);
+const resetUrl =
+`${baseUrl}/reset-password/${resetToken}`;
+
+console.log(
+  "RESET_URL_DEBUG:",
+  JSON.stringify(resetUrl)
+);
 const html = `
 <div style="font-family:Arial;padding:30px;text-align:center;background:#f4f7fb;">
 
