@@ -5,22 +5,33 @@ const client = SibApiV3Sdk.ApiClient.instance;
 client.authentications["api-key"].apiKey =
   process.env.BREVO_API_KEY;
 
-const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+const apiInstance =
+  new SibApiV3Sdk.TransactionalEmailsApi();
+
 const sendEmail = async (email, subject, html) => {
   try {
-    const result = await apiInstance.sendTransacEmail({
-      sender: {
-        email: process.env.BREVO_EMAIL,
-        name: "Inventory AI",
-      },
-      to: [
-        {
-          email,
+    const result =
+      await apiInstance.sendTransacEmail({
+        sender: {
+          email: process.env.BREVO_EMAIL,
+          name: "Inventory AI",
         },
-      ],
-      subject,
-      htmlContent: html,
-    });
+
+        to: [
+          {
+            email,
+          },
+        ],
+
+        subject,
+
+        htmlContent: html,
+
+        headers: {
+          "X-Mailin-track": "0",
+          "X-Mailin-track-clicks": "0",
+        },
+      });
 
     console.log("Email sent:", result);
     return result;
