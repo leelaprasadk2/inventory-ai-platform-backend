@@ -164,8 +164,7 @@ try{
 
 await axios.post(
 
-"http://localhost:5678/webhook/inventory-ai",
-
+ process.env.N8N_WEBHOOK_URL,
 {
 
 productIds:
